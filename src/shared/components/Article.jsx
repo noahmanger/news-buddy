@@ -7,7 +7,7 @@ export default class App extends React.Component {
 
   formatDate(rawDate) {
     const date = new Date(rawDate);
-    return date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear();
+    return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
   }
 
   render() {
@@ -22,8 +22,12 @@ export default class App extends React.Component {
               {this.props.data.title}
             </a>
           </h3>
-          <p className="subtitle is-6">Published: {this.formatDate(this.props.data.publishedAt)}</p>
+          <p className="content">Published: {this.formatDate(this.props.data.publishedAt)}</p>
           <p className="content">{this.props.data.description}</p>
+          {
+            this.props.isSaved &&
+            <button className="button is-small is-secondary" onClick={this.props.readArticle} data-url={this.props.data.url}>Read offline</button>
+          }
         </div>
       </article>
     )

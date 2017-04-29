@@ -1,4 +1,4 @@
-# News reader
+# News buddy
 A simple isomorphic React app for browsing the latest articles from various sites, served up by [NewsAPI](https://newsapi.org/).
 
 ![demo](http://g.recordit.co/GQrzeXQU9j.gif)

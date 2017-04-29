@@ -1,0 +1,67 @@
+@import "../../node_modules/bulma/sass/utilities/initial-variables";
+
+$family-primary: 'Helvetica';
+$family-serif: 'Georgia';
+
+$green: #6BF178;
+$pink: #FF5964;
+$primary: $pink;
+
+@import '../../node_modules/bulma/bulma';
+
+body {
+  background-color: #f5f5f5;
+}
+
+.container {
+  padding: 0 1rem;
+}
+
+
+.media-content {
+  .title {
+    margin-bottom: .5rem;
+  }
+
+  .content {
+    font-family: $family-serif;
+  }
+}
+
+.header {
+  background-color: $primary;
+  color: #fff;
+  padding: 1rem 0;
+
+  h1 {
+    font-weight: 800;
+  }
+}
+
+.title {
+  font-weight: 800;
+}
+
+.progress {
+  margin-bottom: 1rem;
+}
+
+.columns {
+  margin: 0;
+}
+
+.article-container {
+  background-color: #f2f2f2;
+  padding-top: 1rem;
+
+  article {
+    background-color: #fff;
+    padding: 2rem;
+    border: 1px solid #dbdbdb;
+
+    p {
+      font-family: $family-serif;
+    }
+
+  }
+}

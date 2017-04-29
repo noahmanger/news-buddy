@@ -4,6 +4,7 @@ import path from 'path';
 import request from 'request';
 import rp from 'request-promise-native';
 import Express from 'express';
+import unfluff from 'unfluff';
 
 import base from './src/views/base';
 import App from './src/shared/components/App.jsx';
@@ -14,7 +15,7 @@ const server = Express();
 
 server.use(Express.static(path.join(__dirname, 'static')));
 
-server.get('/', (req, res)=>{
+server.get('/', (req, res) => {
   let source = Object.keys(sources)[0];
   if (req.query.source && sources[req.query.source]) {
     source = req.query.source;
@@ -45,6 +46,18 @@ server.get('/', (req, res)=>{
   });
 });
 
-server.listen(3000, ()=>{
+server.get('/download', (req, res) => {
+  let url = req.query.url;
+  rp(url).then((resp) => {
+    let article = unfluff(resp);
+    let data = {
+      content: article.text,
+      title: article.title
+    }
+    res.send({body: data});
+  })
+});
+
+server.listen(3000, () => {
   console.log('Listening on 3000');
 });
