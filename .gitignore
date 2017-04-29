@@ -1,2 +1,4 @@
 node_modules
 static/js/*.js
+
+static/js/bundle.js

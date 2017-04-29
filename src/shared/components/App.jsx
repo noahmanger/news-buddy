@@ -32,7 +32,7 @@ export default class App extends React.Component {
     fetch(url).then(function(resp) {
       resp.json().then(function(data) {
         self.setState({articles: data.articles})
-        window.history.pushState({}, '', window.location.origin + window.location.pathname + '?source=' + source;
+        window.history.pushState({}, '', window.location.origin + window.location.pathname + '?source=' + source);
       })
     });
   }
