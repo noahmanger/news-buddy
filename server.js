@@ -1,15 +1,15 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import path from 'path';
+import request from 'request';
+import rp from 'request-promise-native';
+import Express from 'express';
+
 import base from './src/views/base';
 import App from './src/shared/components/App.jsx';
 import sources from './src/shared/sources.js';
 
 const KEY = process.env.NEWS_API_KEY;
-
-const path = require('path');
-const request = require('request');
-const rp = require('request-promise-native');
-const Express = require('express');
 const server = Express();
 
 server.use(Express.static(path.join(__dirname, 'static')));
