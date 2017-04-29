@@ -26,31 +26,32 @@ export default class App extends React.Component {
     }
   }
 
-  fetchNews() {
+  fetchNews(source) {
     const self = this;
-    const url = buildUrl(this.props.apiKey, this.state.source);
+    const url = buildUrl(this.props.apiKey, source);
     fetch(url).then(function(resp) {
       resp.json().then(function(data) {
         self.setState({articles: data.articles})
+        window.history.pushState({}, '', window.location.origin + window.location.pathname + '?source=' + source;
       })
     });
   }
 
   switchSource(e) {
     e.preventDefault();
+    let source = e.target.dataset.source;
     this.setState({
-      source: e.target.dataset.source
+      source: source
     })
 
-    this.fetchNews();
-    window.history.pushState({}, '', window.location.origin + window.location.pathname + '?source=' + e.target.dataset.source);
+    this.fetchNews(source);
   }
 
   render() {
     return (
       <main className="columns">
         <SourceToggle switchSource={this.switchSource.bind(this)} selected={this.state.source}/>
-        <ArticleList articles={this.state.articles} source={this.state.source}/>
+        <ArticleList articles={this.state.articles} source={this.state.source} />
       </main>
     )
   }

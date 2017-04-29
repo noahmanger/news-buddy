@@ -5,6 +5,11 @@ export default class App extends React.Component {
     super(props);
   }
 
+  formatDate(rawDate) {
+    const date = new Date(rawDate);
+    return date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear();
+  }
+
   render() {
     return (
       <article className="box media">
@@ -17,7 +22,7 @@ export default class App extends React.Component {
               {this.props.data.title}
             </a>
           </h3>
-          <p className="subtitle is-6">Published: {this.props.data.publishedAt}</p>
+          <p className="subtitle is-6">Published: {this.formatDate(this.props.data.publishedAt)}</p>
           <p className="content">{this.props.data.description}</p>
         </div>
       </article>

@@ -1,5 +1,5 @@
 {
-  "name": "The news",
+  "name": "The-news",
   "version": "1.0.0",
   "description": "A simple isomorphic react app for reading the news",
   "main": "src/server.js",
