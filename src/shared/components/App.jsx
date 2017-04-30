@@ -6,14 +6,16 @@ import ReadArticle from './ReadArticle.jsx';
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 
-function buildUrl(key, source) {
-  let base = 'https://newsapi.org/v1/articles?';
-  let params = {
-    'apiKey': key,
-    'source': source
-  }
+/* global window, localStorage */
 
-  let query = Object.keys(params).map(k => k + '=' + params[k]).join('&');
+function buildUrl(key, source) {
+  const base = 'https://newsapi.org/v1/articles?';
+  const params = {
+    apiKey: key,
+    source,
+  };
+
+  const query = Object.keys(params).map(k => `${k}=${params[k]}`).join('&');
   return base + query;
 }
 
@@ -24,8 +26,8 @@ export default class App extends React.Component {
       articles: this.props.articles,
       source: this.props.source,
       url: buildUrl(this.props.apiKey, this.props.source),
-      hasSavedArticles: false
-    }
+      hasSavedArticles: false,
+    };
   }
 
   componentDidMount() {
@@ -33,35 +35,35 @@ export default class App extends React.Component {
     const savedArticles = JSON.parse(localStorage.getItem('savedArticles'));
     if (savedArticles && savedArticles[this.state.source]) {
       this.setState({
-        hasSavedArticles: true
-      })
+        hasSavedArticles: true,
+      });
     }
   }
 
   fetchNews(source) {
     const self = this;
     const url = buildUrl(this.props.apiKey, source);
-    fetch(url).then(function(resp) {
-      resp.json().then(function(data) {
-        self.setState({articles: data.articles})
-        window.history.pushState({}, '', window.location.origin + window.location.pathname + '?source=' + source);
-      })
+    fetch(url).then((resp) => {
+      resp.json().then((data) => {
+        self.setState({ articles: data.articles });
+        window.history.pushState({}, '', `${window.location.origin + window.location.pathname}?source=${source}`);
+      });
     });
   }
 
   switchSource(e) {
     e.preventDefault();
-    let source = e.target.dataset.source;
+    const source = e.target.dataset.source;
     let hasSavedArticles = false;
-    let localArticles = JSON.parse(localStorage.getItem('savedArticles'));
+    const localArticles = JSON.parse(localStorage.getItem('savedArticles'));
     if (localArticles && localArticles[source]) {
-      hasSavedArticles = true
+      hasSavedArticles = true;
     }
 
     this.setState({
-      source: source,
-      hasSavedArticles: hasSavedArticles
-    })
+      source,
+      hasSavedArticles,
+    });
 
     this.fetchNews(source);
   }
@@ -69,7 +71,7 @@ export default class App extends React.Component {
   download() {
     /* Call /download to get the title and text of each article */
     const self = this;
-    let sourceArticles = [];
+    const sourceArticles = [];
     let savedArticles = {};
     let count = 0;
     // Check if there's already saved articles
@@ -77,19 +79,18 @@ export default class App extends React.Component {
       savedArticles = JSON.parse(localStorage.getItem('savedArticles'));
     }
 
-    this.state.articles.map((article) => {
-      let url = window.location.origin + '/download?url=' + article.url;
+    this.state.articles.forEach((article) => {
+      const url = `${window.location.origin}/download?url=${article.url}`;
       fetch(url).then((resp) => {
-        console.log('saving...');
-        self.setState({isSavingArticles: true});
-        resp.json().then(function(data) {
-          let savedArticle = {
+        self.setState({ isSavingArticles: true });
+        resp.json().then((data) => {
+          const savedArticle = {
             title: data.body.title,
             content: data.body.content,
             url: article.url,
             date: article.publishedAt,
-            author: article.author
-          }
+            author: article.author,
+          };
           sourceArticles.push(savedArticle);
           savedArticles[self.state.source] = sourceArticles;
           // Save to localStorage and set state
@@ -98,7 +99,7 @@ export default class App extends React.Component {
           self.setState({
             hasSavedArticles: true,
             savedArticleCount: count,
-            isSavingArticles: count < self.state.articles.length ? true : false
+            isSavingArticles: count < self.state.articles.length,
           });
         });
       });
@@ -107,28 +108,26 @@ export default class App extends React.Component {
 
   emptyStorage() {
     localStorage.removeItem('savedArticles');
-    this.setState({hasSavedArticles: false});
+    this.setState({ hasSavedArticles: false });
   }
 
   readArticle(e) {
     const savedArticles = JSON.parse(localStorage.getItem('savedArticles'))[this.state.source];
     const url = e.target.dataset.url;
-    const savedArticle = savedArticles.find((article) => {
-      return article.url === url;
-    });
+    const savedArticle = savedArticles.find(article => article.url === url);
 
-    this.setState({reading: savedArticle});
+    this.setState({ reading: savedArticle });
   }
 
   closeArticle() {
-    this.setState({reading: false});
+    this.setState({ reading: false });
   }
 
   render() {
     let body =
-      <div className="container is-fluid">
+      (<div className="container is-fluid">
         <div className="columns">
-          <SourceToggle switchSource={this.switchSource.bind(this)} selected={this.state.source}/>
+          <SourceToggle switchSource={this.switchSource.bind(this)} selected={this.state.source} />
           <ArticleList
             articles={this.state.articles}
             source={this.state.source}
@@ -138,28 +137,29 @@ export default class App extends React.Component {
             hasSavedArticles={this.state.hasSavedArticles}
             isSavingArticles={this.state.isSavingArticles}
             savedArticleCount={this.state.savedArticleCount}
-            />
+          />
         </div>
 
-      </div>
+      </div>);
 
     if (this.state.reading) {
       body =
-        <div className="columns article-container">
+        (<div className="columns article-container">
           <ReadArticle
             title={this.state.reading.title}
             content={this.state.reading.content}
             source={this.state.source}
             author={this.state.reading.author}
             date={this.state.reading.date}
-            closeArticle={this.closeArticle.bind(this)}/>
-        </div>
+            closeArticle={this.closeArticle.bind(this)}
+          />
+        </div>);
     }
 
     return (
       <main>
         {body}
       </main>
-    )
+    );
   }
 }

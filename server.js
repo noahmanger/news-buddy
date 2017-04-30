@@ -1,14 +1,13 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import path from 'path';
-import request from 'request';
 import rp from 'request-promise-native';
 import Express from 'express';
 import unfluff from 'unfluff';
 
 import base from './src/views/base';
 import App from './src/shared/components/App.jsx';
-import sources from './src/shared/sources.js';
+import sources from './src/shared/sources';
 
 const KEY = process.env.NEWS_API_KEY;
 const server = Express();
@@ -24,38 +23,38 @@ server.get('/', (req, res) => {
     uri: 'https://newsapi.org/v1/articles',
     qs: {
       apiKey: KEY,
-      source: source
+      source,
     },
     json: true,
     headers: {
-        'User-Agent': 'Request-Promise'
-    }
-  }
-  rp(options).then(function(newsResponse) {
+      'User-Agent': 'Request-Promise',
+    },
+  };
+  rp(options).then((newsResponse) => {
     const initialState = {
-      'articles': newsResponse.articles,
-      'apiKey': KEY,
-      'source': source
-    }
-    const app = renderToString(<App {...initialState}/>)
+      articles: newsResponse.articles,
+      apiKey: KEY,
+      source,
+    };
+    const app = renderToString(<App {...initialState} />);
     res.send(base({
       body: app,
       title: 'News buddy',
-      initialState: JSON.stringify(initialState)
-    }))
+      initialState: JSON.stringify(initialState),
+    }));
   });
 });
 
 server.get('/download', (req, res) => {
-  let url = req.query.url;
+  const url = req.query.url;
   rp(url).then((resp) => {
-    let article = unfluff(resp);
-    let data = {
+    const article = unfluff(resp);
+    const data = {
       content: article.text,
-      title: article.title
-    }
-    res.send({body: data});
-  })
+      title: article.title,
+    };
+    res.send({ body: data });
+  });
 });
 
 server.listen(3000, () => {

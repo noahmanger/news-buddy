@@ -1,6 +1,5 @@
 
-export default ({body, title, initialState}) => {
-  return `
+export default ({ body, title, initialState }) => `
     <!DOCTYPE html>
     <html lang="en">
       <head>
@@ -25,5 +24,4 @@ export default ({body, title, initialState}) => {
         </footer>
       </body>
     </html>
-  `
-}
+  `;
