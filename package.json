@@ -5,8 +5,10 @@
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js --exec babel-node",
+    "watch-server": "nodemon server.js --exec babel-node",
+    "start": "yarn build && babel-node server.js",
     "watch": "webpack --progress --watch",
+    "build": "webpack && yarn build-sass",
     "build-sass": "node-sass --include-path scss static/scss/styles.scss static/css/styles.css",
     "watch-sass": "nodemon -e scss -x \"npm run build-sass\""
   },
