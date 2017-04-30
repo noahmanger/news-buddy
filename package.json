@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch-server": "nodemon server.js --exec babel-node",
-    "start": "yarn build && babel-node server.js",
+    "start": "yarn build && ./node_modules/.bin/babel-node server.js",
     "watch": "webpack --progress --watch",
     "build": "webpack && yarn build-sass",
     "build-sass": "node-sass --include-path scss static/scss/styles.scss static/css/styles.css",
