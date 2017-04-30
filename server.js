@@ -40,7 +40,7 @@ server.get('/', (req, res) => {
     const app = renderToString(<App {...initialState}/>)
     res.send(base({
       body: app,
-      title: 'The News',
+      title: 'News buddy',
       initialState: JSON.stringify(initialState)
     }))
   });

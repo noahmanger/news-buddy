@@ -12,7 +12,7 @@ export default ({body, title, initialState}) => {
       <body>
         <header class="header">
           <div class="container is-fluid">
-            <h1>The news</h1>
+            <h1>${title}</h1>
           </div>
         </header>
         <div id="app">${body}</div>
