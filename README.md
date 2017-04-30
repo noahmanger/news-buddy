@@ -1,7 +1,9 @@
 # News buddy
-A simple isomorphic React app for browsing the latest articles from various sites, served up by [NewsAPI](https://newsapi.org/).
+A simple isomorphic React app for browsing the latest articles from various sites and saving for offline reading, served up by [NewsAPI](https://newsapi.org/).
 
-![demo](http://g.recordit.co/GQrzeXQU9j.gif)
+![demo](http://g.recordit.co/P3g3xHKR5C.gif)
+
+Saved articles are stored in `localStorage` for easy offline reading on a plane or train.
 
 ## Get started
 
@@ -20,4 +22,4 @@ Build assets:
 yarn watch
 ```
 
-Styles from [Bulma](http://bulma.io/).
+Styles from [Bulma](http://bulma.io/). Article parsing by [Unfluff](http://npmjs.com/unfluff).
